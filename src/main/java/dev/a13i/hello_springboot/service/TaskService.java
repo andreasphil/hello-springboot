@@ -1,5 +1,6 @@
 package dev.a13i.hello_springboot.service;
 
+import dev.a13i.hello_springboot.exception.TaskNotFoundException;
 import dev.a13i.hello_springboot.model.Task;
 import dev.a13i.hello_springboot.repository.TaskRepository;
 import jakarta.transaction.Transactional;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Service
 public class TaskService {
+
   private final TaskRepository taskRepository;
 
   TaskService(TaskRepository taskRepository) {
@@ -20,7 +22,7 @@ public class TaskService {
   }
 
   public Task getTask(String id) {
-    return this.taskRepository.findById(id).orElseThrow();
+    return this.taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
   }
 
   public Task createTask(String text) {
