@@ -3,6 +3,8 @@ package dev.a13i.hello_springboot.controller;
 import dev.a13i.hello_springboot.controller.payload.CreateTaskBody;
 import dev.a13i.hello_springboot.model.Task;
 import dev.a13i.hello_springboot.service.TaskService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +13,10 @@ import java.util.List;
 
 @RestController
 public class TaskController {
+
   private final TaskService taskService;
 
+  @Autowired
   TaskController(TaskService taskService) {
     this.taskService = taskService;
   }
@@ -30,13 +34,13 @@ public class TaskController {
   }
 
   @PostMapping(path = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Task> createTask(@RequestBody final CreateTaskBody body) {
+  public ResponseEntity<Task> createTask(@Valid @RequestBody final CreateTaskBody body) {
     final var newTask = taskService.createTask(body.text());
     return ResponseEntity.ok(newTask);
   }
 
   @PutMapping(path = "/tasks/{taskId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Task> updateTask(@PathVariable String taskId, @RequestBody final Task body) {
+  public ResponseEntity<Task> updateTask(@PathVariable String taskId, @Valid @RequestBody final Task body) {
     return ResponseEntity.ok(taskService.updateTask(taskId, body));
   }
 

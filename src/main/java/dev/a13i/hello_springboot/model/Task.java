@@ -4,13 +4,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.validation.annotation.Validated;
 
 @Entity
+@Validated
 public class Task {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
+  @NotBlank(message = "Text is required")
   private String text;
 
   private boolean completed;
